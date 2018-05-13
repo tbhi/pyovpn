@@ -128,6 +128,17 @@ class PyOvpn(object):
                 } + 
                 self._inline_conf(name))
 
+    def revoke(self, name):
+        self.easyrsa(['--batch', 'revoke', name])
+        self.easyrsa(['gen-crl'])
+
+    def list_(self):
+        print(self.read(['pki', 'index.txt']))
+
+    def crl(self):
+        self.easyrsa(['gen-crl'])
+        print(self.read(['pki', 'crl.pem']))
+
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='Generate openvpn configuration')
@@ -137,7 +148,12 @@ if __name__ == '__main__':
                         help='server hostname|client name')
     args = parser.parse_args()
     ovpn = PyOvpn(args.dest)
-    if args.action[0] == 'server':
-        ovpn.generate_server(*args.action[1:])
-    elif args.action[0] == 'client':
-        ovpn.generate_client(*args.action[1:])
+    actions = {
+        'server': ovpn.generate_server,
+        'client': ovpn.generate_client,
+        'revoke': ovpn.revoke,
+        'list': ovpn.list_,
+        'crl': ovpn.crl
+    }
+    if args.action[0] in actions:
+        actions[args.action[0]](*args.action[1:])
