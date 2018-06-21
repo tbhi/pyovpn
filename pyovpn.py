@@ -20,15 +20,10 @@ persist-tun
 tls-version-min 1.2
 '''
 SERVER_CONF = '''\
-dev tun
-proto udp
 port 1194
 server 10.8.0.0 255.255.255.0
 keepalive 10 120
 remote-cert-tls client
-cipher AES-256-CBC
-auth SHA256
-compress lz4
 user nobody
 group nogroup
 crl-verify /etc/openvpn/crl.pem
