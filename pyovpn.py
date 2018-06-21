@@ -136,6 +136,7 @@ class PyOvpn(object):
         self.easyrsa(['gen-crl'])
         print(self.read(['pki', 'crl.pem']))
 
+
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='Generate openvpn configuration')
