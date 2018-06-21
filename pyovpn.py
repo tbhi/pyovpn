@@ -68,7 +68,7 @@ class PyOvpn(object):
         self.config = os.path.join(self.dest, 'config.json')
 
     def setup_easyrsa(self):
-        easyrsa_tgz = os.path.join(self.dest, "easyrsa.tgz")
+        easyrsa_tgz = os.path.join(self.dest, 'easyrsa.tgz')
         urllib.request.urlretrieve(EASYRSAURL, easyrsa_tgz)
         tar = tarfile.open(easyrsa_tgz)
         tar.extractall(self.dest)
