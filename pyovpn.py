@@ -28,6 +28,7 @@ user nobody
 group nogroup
 crl-verify /etc/openvpn/crl.pem
 key-direction 0
+dh none
 '''
 CLIENT_CONF = '''\
 client
