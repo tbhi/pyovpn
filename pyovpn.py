@@ -32,9 +32,6 @@ compress lz4
 user nobody
 group nogroup
 crl-verify /etc/openvpn/crl.pem
-status /var/log/openvpn-status.log 20
-status-version 3
-syslog
 key-direction 0
 '''
 CLIENT_CONF = '''\
