@@ -136,8 +136,8 @@ class PyOvpn(object):
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='Generate openvpn configuration')
-    parser.add_argument('dest', metavar='DEST', type=str,
-                        help='destination for data')
+    parser.add_argument('--dest', metavar='DEST', type=str, default='data',
+                        help='destination for data, default ./data')
     parser.add_argument('action', metavar='ACTION', type=str, nargs='+',
                         help='server hostname|client name|revoke name|list|crl')
     args = parser.parse_args()
