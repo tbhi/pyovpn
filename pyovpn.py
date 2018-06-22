@@ -139,7 +139,7 @@ if __name__ == '__main__':
     parser.add_argument('dest', metavar='DEST', type=str,
                         help='destination for data')
     parser.add_argument('action', metavar='ACTION', type=str, nargs='+',
-                        help='server hostname|client name')
+                        help='server hostname|client name|revoke name|list|crl')
     args = parser.parse_args()
     ovpn = PyOvpn(args.dest)
     actions = {
