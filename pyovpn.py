@@ -3,6 +3,7 @@
 import json
 import os
 import random
+import shutil
 import string
 import subprocess
 import tarfile
@@ -54,7 +55,7 @@ INLINE_CONF = '''\
 %(tlskey)s
 </tls-crypt>
 '''
-EASYRSAURL = 'https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.4/EasyRSA-3.0.4.tgz'
+EASYRSAURL = 'https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.6/EasyRSA-unix-v3.0.6.tgz'
 
 
 class PyOvpn(object):
@@ -72,10 +73,9 @@ class PyOvpn(object):
         tar = tarfile.open(easyrsa_tgz)
         tar.extractall(self.dest)
         easyrsa_dest = os.path.join(self.dest, 'easyrsa')
+        shutil.rmtree(easyrsa_dest, True)
         os.rename(os.path.join(self.dest, tar.getnames()[0]), easyrsa_dest)
         os.remove(easyrsa_tgz)
-        self.easyrsa(['--batch', 'init-pki'])
-        self.easyrsa(['--batch', 'build-ca', 'nopass'])
 
     def easyrsa(self, args):
         subprocess.check_call(['easyrsa/easyrsa'] + args, cwd=self.dest, env=self.environ)
@@ -99,6 +99,8 @@ class PyOvpn(object):
     def generate_server(self, hostname):
         os.makedirs(self.dest)
         self.setup_easyrsa()
+        self.easyrsa(['--batch', 'init-pki'])
+        self.easyrsa(['--batch', 'build-ca', 'nopass'])
         # Generate a random, alphanumeric identifier of 16 characters for this server so that we can use verify-x509-name later that is unique for this server installation. Source: Earthgecko (https://gist.github.com/earthgecko/3089509)
         server_name = 'server_%s' % ''.join(random.choices(string.ascii_uppercase + string.digits, k=16))
         with open(self.config, 'w') as f:
@@ -142,7 +144,7 @@ if __name__ == '__main__':
     parser.add_argument('--dest', metavar='DEST', type=str, default='data',
                         help='destination for data, default ./data')
     parser.add_argument('action', metavar='ACTION', type=str, nargs='+',
-                        help='server hostname|client name|revoke name|list|crl')
+                        help='server hostname|client name|revoke name|list|crl|update')
     args = parser.parse_args()
     ovpn = PyOvpn(args.dest)
     actions = {
@@ -150,7 +152,8 @@ if __name__ == '__main__':
         'client': ovpn.generate_client,
         'revoke': ovpn.revoke,
         'list': ovpn.list_,
-        'crl': ovpn.crl
+        'crl': ovpn.crl,
+        'update': ovpn.setup_easyrsa
     }
     if args.action[0] in actions:
         actions[args.action[0]](*args.action[1:])
