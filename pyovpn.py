@@ -62,6 +62,9 @@ class PyOvpn(object):
     def __init__(self, dest):
         self.dest = dest
         self.config = os.path.join(self.dest, 'config.json')
+        self.environ = os.environ.copy()
+        self.environ['EASYRSA_CERT_EXPIRE'] = '3650'
+        self.environ['EASYRSA_CRL_DAYS'] = '3650'
 
     def setup_easyrsa(self):
         easyrsa_tgz = os.path.join(self.dest, 'easyrsa.tgz')
@@ -75,7 +78,7 @@ class PyOvpn(object):
         self.easyrsa(['--batch', 'build-ca', 'nopass'])
 
     def easyrsa(self, args):
-        subprocess.check_call(['easyrsa/easyrsa'] + args, cwd=self.dest)
+        subprocess.check_call(['easyrsa/easyrsa'] + args, cwd=self.dest, env=self.environ)
 
     def read(self, path):
         with open(os.path.join(*[self.dest] + path)) as f:
