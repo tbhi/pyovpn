@@ -55,7 +55,7 @@ INLINE_CONF = '''\
 %(tlskey)s
 </tls-crypt>
 '''
-EASYRSAURL = 'https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.6/EasyRSA-unix-v3.0.6.tgz'
+EASYRSAURL = 'https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.8/EasyRSA-unix-v3.0.8.tgz'
 
 
 class PyOvpn(object):
