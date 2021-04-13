@@ -64,8 +64,8 @@ class PyOvpn(object):
         self.dest = dest
         self.config = os.path.join(self.dest, 'config.json')
         self.environ = os.environ.copy()
-        self.environ['EASYRSA_CERT_EXPIRE'] = '3650'
-        self.environ['EASYRSA_CRL_DAYS'] = '3650'
+        self.environ['EASYRSA_CERT_EXPIRE'] = '36500'
+        self.environ['EASYRSA_CRL_DAYS'] = '36500'
 
     def setup_easyrsa(self):
         easyrsa_tgz = os.path.join(self.dest, 'easyrsa.tgz')
